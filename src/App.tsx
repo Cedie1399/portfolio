@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Hero from '@/components/Hero'
@@ -7,8 +8,14 @@ import Experience from '@/components/sections/Experience'
 import Education from '@/components/sections/Education'
 import Skills from '@/components/sections/Skills'
 import Contact from '@/components/sections/Contact'
+import { initSmoothScroll } from '@/lib/smooth-scroll'
 
 export default function App() {
+  useEffect(() => {
+    const handle = initSmoothScroll()
+    return () => handle?.destroy()
+  }, [])
+
   return (
     <>
       <Header />

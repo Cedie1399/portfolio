@@ -7,6 +7,8 @@ import {
   BentoTitle,
 } from '@/components/BentoCard'
 import CaseStudyDialog from '@/components/CaseStudyDialog'
+import { SectionHeader } from '@/components/SectionHeader'
+import { useGsapSection } from '@/hooks/useGsapSection'
 import { projects, type Project } from '@/data/portfolioData'
 
 const SPANS = [
@@ -28,7 +30,7 @@ function TechTags({ tech }: { tech: Project['tech'] }) {
       {tech.map((t) => (
         <li
           key={t}
-          className="rounded-full border border-border/70 bg-surface/60 px-2 py-0.5 text-[10px] tracking-wide text-muted"
+          className="rounded-full border border-border/70 bg-surface/60 px-2 py-0.5 text-[10px] tracking-wide text-muted transition-colors hover:border-accent/40 hover:text-fg"
         >
           {t}
         </li>
@@ -39,18 +41,20 @@ function TechTags({ tech }: { tech: Project['tech'] }) {
 
 export default function Projects() {
   const [active, setActive] = useState<Project | null>(null)
+  const sectionRef = useGsapSection<HTMLElement>()
 
   return (
-    <section id="work" className="scroll-mt-24 px-6 py-24">
+    <section
+      ref={sectionRef}
+      id="work"
+      className="scroll-mt-24 px-6 py-24"
+    >
       <div className="mx-auto max-w-6xl">
-        <header className="mb-12 max-w-2xl">
-          <p className="mb-3 text-xs uppercase tracking-[0.22em] text-muted">
-            02 · Selected Work
-          </p>
-          <h2 className="font-display text-3xl font-semibold text-fg md:text-4xl">
-            Case studies across full-stack, SaaS, and manufacturing systems.
-          </h2>
-        </header>
+        <SectionHeader
+          number="02"
+          label="Selected Work"
+          title="Case studies across full-stack, SaaS, and manufacturing systems."
+        />
 
         <BentoGrid>
           {projects.map((project, i) => (
@@ -68,7 +72,7 @@ export default function Projects() {
                   <button
                     type="button"
                     onClick={() => setActive(project)}
-                    className="self-start text-xs uppercase tracking-[0.18em] text-fg/80 transition-colors hover:text-fg"
+                    className="self-start text-xs uppercase tracking-[0.18em] text-accent transition-colors hover:text-accent-bright"
                   >
                     Read case study →
                   </button>

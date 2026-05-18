@@ -5,20 +5,25 @@ import {
   BentoEyebrow,
   BentoTitle,
 } from '@/components/BentoCard'
+import { SectionHeader } from '@/components/SectionHeader'
+import { useGsapSection } from '@/hooks/useGsapSection'
 import { profile } from '@/data/portfolioData'
 
 export default function About() {
+  const sectionRef = useGsapSection<HTMLElement>()
+
   return (
-    <section id="about" className="scroll-mt-24 px-6 py-24">
+    <section
+      ref={sectionRef}
+      id="about"
+      className="scroll-mt-24 px-6 py-24"
+    >
       <div className="mx-auto max-w-6xl">
-        <header className="mb-12 max-w-2xl">
-          <p className="mb-3 text-xs uppercase tracking-[0.22em] text-muted">
-            01 · About
-          </p>
-          <h2 className="font-display text-3xl font-semibold text-fg md:text-4xl">
-            Engineer growing into systems work.
-          </h2>
-        </header>
+        <SectionHeader
+          number="01"
+          label="About"
+          title="Engineer growing into systems work."
+        />
 
         <BentoGrid>
           <BentoCard className="md:col-span-4 lg:col-span-4">

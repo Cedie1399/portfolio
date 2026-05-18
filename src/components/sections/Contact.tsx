@@ -5,20 +5,26 @@ import {
   BentoEyebrow,
   BentoTitle,
 } from '@/components/BentoCard'
+import { MagneticLink } from '@/components/MagneticLink'
+import { SectionHeader } from '@/components/SectionHeader'
+import { useGsapSection } from '@/hooks/useGsapSection'
 import { contact } from '@/data/portfolioData'
 
 export default function Contact() {
+  const sectionRef = useGsapSection<HTMLElement>()
+
   return (
-    <section id="contact" className="scroll-mt-24 px-6 py-24">
+    <section
+      ref={sectionRef}
+      id="contact"
+      className="scroll-mt-24 px-6 py-24"
+    >
       <div className="mx-auto max-w-6xl">
-        <header className="mb-12 max-w-2xl">
-          <p className="mb-3 text-xs uppercase tracking-[0.22em] text-muted">
-            06 · Contact
-          </p>
-          <h2 className="font-display text-3xl font-semibold text-fg md:text-4xl">
-            Let's build something.
-          </h2>
-        </header>
+        <SectionHeader
+          number="06"
+          label="Contact"
+          title="Let's build something."
+        />
 
         <BentoGrid>
           <BentoCard
@@ -32,19 +38,20 @@ export default function Contact() {
               interesting systems problems — I'd like to hear about it.
             </BentoBody>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <a
+            <div className="mt-8 flex flex-wrap items-center gap-6">
+              <MagneticLink
                 href={`mailto:${contact.email}`}
-                className="inline-flex items-center gap-2 rounded-full border border-fg/20 bg-fg/5 px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:bg-fg/10"
+                className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-5 py-2.5 text-sm font-medium text-accent hover:border-accent/60 hover:bg-accent/15 hover:text-accent-bright"
               >
                 {contact.email}
-              </a>
+              </MagneticLink>
+
               <ul className="flex flex-wrap items-center gap-4 text-xs uppercase tracking-[0.18em] text-muted">
                 {contact.socials.map((s) => (
                   <li key={s.label}>
                     <a
                       href={s.href}
-                      className="transition-colors hover:text-fg"
+                      className="transition-colors hover:text-accent"
                       target="_blank"
                       rel="noreferrer"
                     >

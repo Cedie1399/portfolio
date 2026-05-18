@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { profile } from '@/data/portfolioData'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { TextScramble } from '@/components/TextScramble'
 
 const HeroScene = lazy(() => import('@/scene/HeroScene'))
 
@@ -63,17 +64,21 @@ export default function Hero() {
       />
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center">
-        <p className="mb-6 text-xs uppercase tracking-[0.25em] text-muted">
+        <p className="mb-6 inline-flex items-center text-xs uppercase tracking-[0.25em] text-muted">
           {profile.role}
+          <span
+            aria-hidden="true"
+            className="cursor-blink ml-2 inline-block h-3 w-[2px] bg-accent align-middle"
+          />
         </p>
         <h1 className="mb-6 max-w-3xl font-display text-5xl font-semibold leading-tight text-fg md:text-7xl">
-          {profile.name}
+          <TextScramble text={profile.name} />
         </h1>
         <p className="max-w-xl text-base leading-relaxed text-muted md:text-lg">
           {profile.tagline}
         </p>
         <div className="mt-12 inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-subtle">
-          <span className="h-px w-8 bg-subtle/40" />
+          <span className="h-px w-8 bg-accent/40" />
           Scroll
         </div>
       </div>

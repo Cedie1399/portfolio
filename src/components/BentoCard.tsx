@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
-import { useReveal } from '@/hooks/useReveal'
 
 type BentoCardProps = {
   children: ReactNode
@@ -13,18 +12,12 @@ export function BentoCard({
   className,
   interactive = true,
 }: BentoCardProps) {
-  const { ref, revealed } = useReveal<HTMLElement>()
-
   return (
     <article
-      ref={ref}
       className={cn(
         'group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-elevated/40 p-6 backdrop-blur-sm',
-        'transition-all duration-500 ease-out motion-reduce:transition-none',
-        interactive && 'hover:border-fg/15 hover:bg-elevated/60',
-        revealed
-          ? 'translate-y-0 opacity-100'
-          : 'translate-y-3 opacity-0 motion-reduce:translate-y-0 motion-reduce:opacity-100',
+        interactive &&
+          'transition-colors duration-300 hover:border-accent/40 hover:bg-elevated/60',
         className,
       )}
     >

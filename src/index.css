@@ -42,6 +42,28 @@
 }
 
 @layer components {
+  @keyframes cursor-blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.01%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .cursor-blink {
+    animation: cursor-blink 1.06s steps(1) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor-blink {
+      animation: none;
+      opacity: 1;
+    }
+  }
+
   .case-study-dialog {
     transition:
       transform 280ms cubic-bezier(0.32, 0.72, 0, 1),

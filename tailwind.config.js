@@ -12,7 +12,9 @@ export default {
         fg: '#e6edf3',
         muted: '#8b949e',
         subtle: '#6e7681',
-        accent: '#cbd5e1',
+        accent: '#34d399',
+        'accent-bright': '#6ee7b7',
+        hairline: '#cbd5e1',
       },
       fontFamily: {
         sans: ['"Inter Variable"', 'Inter', 'system-ui', 'sans-serif'],
