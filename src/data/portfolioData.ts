@@ -44,7 +44,11 @@ export type Education = {
 
 export const profile = {
   name: 'Cyrus Daniel Santos',
+  initials: 'CDS',
   role: 'Software Development Engineer',
+  location: 'Manila, PH',
+  status: 'Open to opportunities',
+  currentlyBuilding: 'AirEvent Gala @ Solutions Resource Inc',
   tagline:
     'Full-stack engineer growing into systems work — multi-tenant SaaS, manufacturing platforms, and interactive web experiences.',
   about:
