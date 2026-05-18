@@ -2,7 +2,7 @@
 
 Personal portfolio site. Hybrid 3D landing with a Bento-grid content section.
 
-**Live:** _TBD — deployed on Vercel_
+**Live:** [portfolio-eight-nu-g8zb6rz3vq.vercel.app](https://portfolio-eight-nu-g8zb6rz3vq.vercel.app/)
 
 ## Stack
 
