@@ -29,6 +29,7 @@ export function useGsapSection<T extends HTMLElement = HTMLElement>() {
           y: 20,
           duration: 0.7,
           ease: 'power3.out',
+          clearProps: 'opacity,transform',
         })
       }
 
@@ -41,6 +42,7 @@ export function useGsapSection<T extends HTMLElement = HTMLElement>() {
             duration: 0.65,
             ease: 'power3.out',
             stagger: 0.07,
+            clearProps: 'opacity,transform',
           },
           header ? '-=0.35' : 0,
         )
