@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:og": "node scripts/build-og.mjs",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit"
   },
@@ -28,6 +29,7 @@
     "@vitejs/plugin-react": "^6.0.2",
     "autoprefixer": "^10.5.0",
     "postcss": "^8.5.14",
+    "sharp": "^0.34.5",
     "tailwindcss": "^3.4.19",
     "typescript": "^6.0.3",
     "vite": "^8.0.13"
