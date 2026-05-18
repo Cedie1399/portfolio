@@ -8,9 +8,20 @@ type SmoothScrollHandle = {
   destroy: () => void
 }
 
-// Pixels of headroom Lenis leaves above an anchor target.
-// Matches the sticky header height + a little breathing room.
-const ANCHOR_OFFSET_PX = 96
+// How far from the top of the viewport the scrolled-to anchor target
+// should land. We aim for ~22% of viewport height so the section heading
+// sits in the upper third (centered-feeling), clamped to never overlap
+// the sticky navbar at small viewport heights.
+const NAVBAR_CLEARANCE_PX = 80
+const VIEWPORT_OFFSET_RATIO = 0.22
+
+function computeAnchorOffset(): number {
+  if (typeof window === 'undefined') return NAVBAR_CLEARANCE_PX
+  return Math.max(
+    NAVBAR_CLEARANCE_PX,
+    Math.round(window.innerHeight * VIEWPORT_OFFSET_RATIO),
+  )
+}
 
 export function initSmoothScroll(): SmoothScrollHandle | null {
   if (typeof window === 'undefined') return null
@@ -56,7 +67,20 @@ export function initSmoothScroll(): SmoothScrollHandle | null {
     if (!el) return
 
     event.preventDefault()
-    lenis.scrollTo(el, { offset: -ANCHOR_OFFSET_PX })
+
+    // Prefer scrolling to the section's <header> element (eyebrow +
+    // heading) so the visible content lands predictably — bypasses the
+    // section's outer py-24 padding. Falls back to the target itself
+    // (e.g. #hero, which has no inner <header>).
+    const sectionHeader = el.querySelector<HTMLElement>(
+      ':scope > div > header',
+    )
+    const scrollTarget = sectionHeader ?? el
+
+    lenis.scrollTo(scrollTarget, {
+      offset: -computeAnchorOffset(),
+      duration: 0.9,
+    })
 
     // Update the URL hash so back-button + bookmarking still work
     if (window.location.hash !== hash) {
