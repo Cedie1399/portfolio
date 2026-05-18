@@ -1,18 +1,42 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { profile } from '@/data/portfolioData'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 const HeroScene = lazy(() => import('@/scene/HeroScene'))
 
+type IdleWindow = Window & {
+  requestIdleCallback?: (
+    cb: () => void,
+    opts?: { timeout: number },
+  ) => number
+  cancelIdleCallback?: (handle: number) => void
+}
+
+function scheduleIdle(cb: () => void): () => void {
+  const win = window as IdleWindow
+  if (win.requestIdleCallback) {
+    const handle = win.requestIdleCallback(cb, { timeout: 2000 })
+    return () => win.cancelIdleCallback?.(handle)
+  }
+  const handle = window.setTimeout(cb, 1500)
+  return () => window.clearTimeout(handle)
+}
+
 export default function Hero() {
   const reducedMotion = useReducedMotion()
+  const [load3D, setLoad3D] = useState(false)
+
+  useEffect(() => {
+    if (reducedMotion) return
+    return scheduleIdle(() => setLoad3D(true))
+  }, [reducedMotion])
 
   return (
     <section
       id="hero"
       className="relative min-h-screen w-full overflow-hidden"
     >
-      {!reducedMotion && (
+      {!reducedMotion && load3D && (
         <div aria-hidden="true" className="absolute inset-0">
           <Suspense fallback={null}>
             <HeroScene />
