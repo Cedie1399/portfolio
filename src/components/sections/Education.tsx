@@ -11,42 +11,27 @@ import {
   SparkleIcon,
 } from '@/components/hero/icons'
 
-const PROGRAM_START = new Date('2022-09-01').getTime()
-const PROGRAM_END = new Date('2026-09-01').getTime()
-
-function programProgress(): number {
-  const now = Date.now()
-  const pct = ((now - PROGRAM_START) / (PROGRAM_END - PROGRAM_START)) * 100
-  return Math.round(Math.min(100, Math.max(0, pct)))
-}
-
 export default function Education() {
   const sectionRef = useGsapSection<HTMLElement>()
   const entry = education[0]
   if (!entry) return null
 
-  const progress = programProgress()
-  const currentYear = Math.min(
-    4,
-    Math.max(1, Math.ceil((progress / 100) * 4)),
-  )
-
   return (
     <section
       ref={sectionRef}
       id="education"
-      className="scroll-mt-24 px-6 py-24"
+      className="scroll-mt-24 px-4 py-20 sm:px-6 sm:py-24"
     >
       <div className="mx-auto max-w-6xl">
         <PageHeader />
 
-        <div className="mt-10">
+        <div className="mt-8 sm:mt-10">
           <AcademicTimeline />
         </div>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-12 lg:gap-10">
+        <div className="mt-8 grid gap-6 lg:grid-cols-12 lg:gap-10">
           <FeatureArticle entry={entry} />
-          <Sidebar progress={progress} currentYear={currentYear} />
+          <Sidebar />
         </div>
 
         <div className="mt-8">
@@ -59,19 +44,19 @@ export default function Education() {
 
 function PageHeader() {
   return (
-    <header className="border-b border-border/60 pb-8">
+    <header className="border-b border-border/60 pb-6 sm:pb-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-accent">
             Page 05 · Education
           </p>
-          <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold leading-tight text-fg md:text-5xl">
-            Studying while shipping.
+          <h2 className="mt-3 max-w-2xl font-display text-2xl font-semibold leading-tight text-fg sm:mt-4 sm:text-3xl md:text-5xl">
+            Class of 2026.
           </h2>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted md:text-base">
-            A bachelor's program completed in parallel with a return to
-            Solutions Resource Inc as a Software Development Engineer —
-            classroom on one rail, production code on the other.
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:mt-4 md:text-base">
+            Four years of Computer Science finished alongside — not before —
+            a return to Solutions Resource Inc as a Software Development
+            Engineer. Classroom on one rail, production code on the other.
           </p>
         </div>
         <p className="hidden font-mono text-[10px] uppercase tracking-[0.22em] text-subtle md:block">
@@ -94,7 +79,7 @@ function FeatureArticle({
         Bachelor's Program
       </span>
 
-      <h3 className="mt-4 font-display text-2xl font-semibold leading-tight text-fg md:text-4xl">
+      <h3 className="mt-4 font-display text-xl font-semibold leading-tight text-fg sm:text-2xl md:text-4xl">
         {entry.degree}
       </h3>
       <p className="mt-1.5 text-sm text-muted md:text-base">{entry.school}</p>
@@ -102,21 +87,22 @@ function FeatureArticle({
         {entry.period}
       </p>
 
-      {entry.details && (
-        <p className="mt-6 text-base leading-relaxed text-muted">
-          <span className="float-left mr-2 mt-1 font-display text-6xl font-semibold leading-[0.78] text-accent">
-            C
-          </span>
-          {entry.details.slice(1)}
-        </p>
-      )}
+      <p className="mt-6 text-sm leading-relaxed text-muted sm:text-base">
+        <span className="float-left mr-2 mt-1 font-display text-5xl font-semibold leading-[0.78] text-accent sm:text-6xl">
+          F
+        </span>
+        our years at De La Salle Araneta University, completed in parallel
+        with returning to SRI in Sep 2025 as an SDE. The thesis artifact —
+        Petmania — shipped end-to-end on a self-managed server. See Selected
+        Work for the case study.
+      </p>
 
       <blockquote className="relative mt-8 border-l-2 border-accent/60 pl-5 md:pl-6">
         <span
           aria-hidden="true"
           className="absolute -left-1.5 -top-3 font-display text-3xl leading-none text-accent/60"
         >
-          “
+          "
         </span>
         <p className="font-display text-base leading-snug text-fg/90 md:text-lg">
           Classroom on one rail, production code on the other — the degree
@@ -136,23 +122,17 @@ type SidebarStat = {
   label: string
 }
 
-function Sidebar({
-  progress,
-  currentYear,
-}: {
-  progress: number
-  currentYear: number
-}) {
+function Sidebar() {
   const stats: SidebarStat[] = [
-    { value: progress, suffix: '%', label: 'Program complete' },
+    { value: 4, label: 'Years to degree' },
     { value: 10, label: 'Semesters total' },
-    { value: 1, label: 'Thesis project' },
+    { value: 1, label: 'Thesis shipped' },
     { value: 1, suffix: '+', label: 'Yr work overlap' },
   ]
 
   return (
     <aside className="lg:col-span-5">
-      <div className="sticky top-24 space-y-4">
+      <div className="space-y-4 lg:sticky lg:top-24">
         <div className="rounded-2xl border border-border bg-elevated/40 p-5 backdrop-blur-sm md:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-accent">
@@ -164,16 +144,16 @@ function Sidebar({
           </div>
 
           <div className="mt-5 flex items-center gap-5">
-            <ProgressBadge progress={progress} />
-            <div>
+            <GraduationBadge />
+            <div className="min-w-0">
               <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-subtle">
-                Year {currentYear} of 4
+                Degree status
               </p>
               <p className="mt-1 font-display text-base font-semibold text-fg">
-                {progress >= 85 ? 'Final stretch' : 'In progress'}
+                Conferred
               </p>
               <p className="mt-1 text-xs text-muted">
-                Defense → graduation Sep 2026
+                Class of 2026 · DLSAU
               </p>
             </div>
           </div>
@@ -214,10 +194,9 @@ function StatTile({ stat }: { stat: SidebarStat }) {
   )
 }
 
-function ProgressBadge({ progress }: { progress: number }) {
+function GraduationBadge() {
   const r = 38
   const circumference = 2 * Math.PI * r
-  const offset = circumference - (progress / 100) * circumference
 
   return (
     <div className="relative h-24 w-24 shrink-0">
@@ -249,15 +228,15 @@ function ProgressBadge({ progress }: { progress: number }) {
           strokeWidth="5"
           strokeLinecap="round"
           strokeDasharray={circumference}
-          strokeDashoffset={offset}
+          strokeDashoffset={0}
         />
       </svg>
 
       <div className="absolute inset-0 grid place-items-center">
         <div className="flex flex-col items-center">
           <GraduationCapIcon className="h-6 w-6 text-accent" />
-          <p className="-mt-0.5 font-display text-sm font-semibold text-fg">
-            {progress}%
+          <p className="-mt-0.5 font-display text-[10px] font-semibold uppercase tracking-[0.18em] text-fg">
+            2026
           </p>
         </div>
       </div>
@@ -267,12 +246,12 @@ function ProgressBadge({ progress }: { progress: number }) {
 
 function ThesisSpotlight() {
   return (
-    <article className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/[0.06] via-elevated/40 to-elevated/20 p-6 md:p-8">
+    <article className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/[0.06] via-elevated/40 to-elevated/20 p-5 sm:p-6 md:p-8">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-10 -top-10 opacity-[0.07]"
+        className="pointer-events-none absolute -right-8 -top-8 opacity-[0.07] md:-right-10 md:-top-10"
       >
-        <GraduationCapIcon className="h-56 w-56 text-fg" />
+        <GraduationCapIcon className="h-36 w-36 text-fg sm:h-44 sm:w-44 md:h-56 md:w-56" />
       </div>
 
       <div className="relative flex flex-wrap items-center justify-between gap-3">
@@ -286,7 +265,7 @@ function ThesisSpotlight() {
 
       <div className="relative mt-4 grid gap-6 md:grid-cols-12 md:gap-8">
         <div className="md:col-span-8">
-          <h4 className="font-display text-2xl font-semibold leading-tight text-fg md:text-3xl">
+          <h4 className="font-display text-xl font-semibold leading-tight text-fg sm:text-2xl md:text-3xl">
             Petmania — a veterinary clinic platform.
           </h4>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted md:text-base">

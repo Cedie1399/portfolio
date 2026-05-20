@@ -1,148 +1,97 @@
-import { useState } from 'react'
-import { cn } from '@/lib/cn'
+import { GraduationCapIcon } from '@/components/about/icons'
+import { SparkleIcon } from '@/components/hero/icons'
 
-// Program: Sep 2022 — Sep 2026. SRI return: Sep 2025.
-const START = new Date('2022-09-01').getTime()
-const END = new Date('2026-09-01').getTime()
-const SRI_RETURN = new Date('2025-09-01').getTime()
-
-const YEARS = [
-  { idx: 0, label: 'Year 1', range: '2022 — 2023', note: 'Foundations' },
-  { idx: 1, label: 'Year 2', range: '2023 — 2024', note: 'Core CS' },
-  { idx: 2, label: 'Year 3', range: '2024 — 2025', note: 'Specialization' },
-  { idx: 3, label: 'Year 4', range: '2025 — 2026', note: 'Thesis · Petmania' },
-]
-
-function yearProgress(yearIdx: number, now = Date.now()): number {
-  const totalDuration = END - START
-  const yearDuration = totalDuration / 4
-  const yearStart = START + yearIdx * yearDuration
-  const yearEnd = yearStart + yearDuration
-  if (now <= yearStart) return 0
-  if (now >= yearEnd) return 1
-  return (now - yearStart) / yearDuration
-}
-
-function currentYear(now = Date.now()): number {
-  const totalDuration = END - START
-  return Math.min(3, Math.max(0, Math.floor(((now - START) / totalDuration) * 4)))
-}
-
-function sriOverlapStart(): number {
-  const totalDuration = END - START
-  return ((SRI_RETURN - START) / totalDuration) * 100
-}
+const MILESTONES = [
+  {
+    year: '2022',
+    label: 'Enrolled',
+    note: 'Began BS Computer Science at DLSAU',
+  },
+  {
+    year: '2025',
+    label: 'Returned to SRI',
+    note: 'Resumed work as SDE while finishing degree',
+  },
+  {
+    year: '2026',
+    label: 'Graduated',
+    note: 'Thesis defended · Petmania shipped',
+  },
+] as const
 
 export function AcademicTimeline() {
-  const [hovered, setHovered] = useState<number | null>(null)
-  const active = currentYear()
-  const overlapStart = sriOverlapStart()
-
   return (
-    <div className="rounded-2xl border border-border bg-elevated/40 p-5 backdrop-blur-sm md:p-7">
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-accent">
-          Academic timeline · 4 years
-        </p>
-        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-subtle">
-          hover a year for context
-        </p>
-      </div>
+    <div className="relative overflow-hidden rounded-2xl border border-accent/25 bg-gradient-to-br from-accent/[0.07] via-elevated/40 to-elevated/20 p-5 backdrop-blur-sm md:p-8">
+      <div
+        aria-hidden="true"
+        className="orb-pulse pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-accent/20 blur-3xl md:-right-16 md:-top-16 md:h-64 md:w-64"
+      />
 
-      <div className="relative">
-        {/* Year segments */}
-        <ol className="grid grid-cols-4 gap-1.5">
-          {YEARS.map((y) => {
-            const fill = yearProgress(y.idx)
-            const isActive = y.idx === active
-            const isPast = fill >= 1
-            const isHovered = hovered === y.idx
-            return (
-              <li
-                key={y.idx}
-                onMouseEnter={() => setHovered(y.idx)}
-                onMouseLeave={() => setHovered(null)}
-                className="group relative"
-              >
-                {/* Segment track */}
-                <div
-                  className={cn(
-                    'relative h-10 overflow-hidden rounded-md border bg-canvas/60 transition-colors duration-300',
-                    isActive
-                      ? 'border-accent/60'
-                      : isPast
-                        ? 'border-accent/30'
-                        : 'border-border',
-                    isHovered && 'border-accent/80',
-                  )}
-                >
-                  {/* Fill */}
-                  <div
-                    className="absolute inset-y-0 left-0 bg-accent/15"
-                    style={{ width: `${fill * 100}%` }}
-                  />
-                  {isActive && (
-                    <div
-                      className="absolute inset-y-0 left-0 border-r-2 border-accent"
-                      style={{ width: `${fill * 100}%` }}
-                    />
-                  )}
+      <div className="relative grid gap-6 md:grid-cols-12 md:gap-8">
+        <div className="md:col-span-5">
+          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-accent">
+            Academic record · Complete
+          </p>
 
-                  {/* Label */}
-                  <div className="relative flex h-full items-center justify-between px-3">
-                    <span
-                      className={cn(
-                        'font-display text-xs font-semibold transition-colors',
-                        isActive
-                          ? 'text-fg'
-                          : isPast
-                            ? 'text-fg/70'
-                            : 'text-subtle',
-                      )}
-                    >
-                      {y.label}
-                    </span>
-                    {isActive && (
-                      <span className="relative flex h-2 w-2">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:hidden" />
-                        <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-                      </span>
-                    )}
-                  </div>
-                </div>
+          <div className="mt-4 inline-flex items-center gap-3 rounded-2xl border border-accent/40 bg-canvas/70 px-4 py-3 backdrop-blur">
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-accent/15 ring-1 ring-accent/40">
+              <GraduationCapIcon className="h-6 w-6 text-accent" />
+            </div>
+            <div className="leading-tight">
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-subtle">
+                Bachelor of Science · CS
+              </p>
+              <p className="font-display text-2xl font-semibold text-fg md:text-3xl">
+                Class of 2026
+              </p>
+            </div>
+          </div>
 
-                {/* Below: year range + note */}
-                <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-subtle">
-                  {y.range}
-                </p>
-                <p
-                  className={cn(
-                    'mt-0.5 text-[10px] uppercase tracking-[0.15em] transition-colors',
-                    isHovered || isActive ? 'text-accent' : 'text-subtle/80',
-                  )}
-                >
-                  {y.note}
-                </p>
-              </li>
-            )
-          })}
-        </ol>
+          <p className="mt-5 max-w-md text-sm leading-relaxed text-muted md:text-base">
+            Four years at De La Salle Araneta University — the back half
+            overlapping a return to Solutions Resource Inc as an SDE.
+          </p>
 
-        {/* SRI overlap band */}
-        <div className="relative mt-6 h-6">
-          <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-border" />
-          <div
-            className="absolute top-1/2 flex h-5 -translate-y-1/2 items-center rounded-full border border-accent/40 bg-canvas px-3 backdrop-blur"
-            style={{
-              left: `${overlapStart}%`,
-              right: 0,
-            }}
-          >
-            <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-accent">
-              while at SRI · returned Sep 2025
-            </span>
+          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-accent">
+            <SparkleIcon className="h-3 w-3" />
+            Degree conferred
           </div>
         </div>
+
+        <ol className="relative md:col-span-7">
+          <span
+            aria-hidden="true"
+            className="absolute left-[15px] top-2 bottom-2 w-px bg-gradient-to-b from-accent/60 via-accent/30 to-accent/10 md:left-0 md:right-0 md:top-[15px] md:bottom-auto md:h-px md:w-auto md:bg-gradient-to-r"
+          />
+
+          <div className="flex flex-col gap-5 md:flex-row md:gap-3">
+            {MILESTONES.map((m, idx) => (
+              <li
+                key={m.year}
+                className="relative flex items-start gap-4 md:flex-1 md:flex-col md:items-start md:gap-3"
+              >
+                <span
+                  aria-hidden="true"
+                  className="relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-accent/50 bg-canvas font-mono text-[10px] font-semibold text-accent"
+                >
+                  {idx + 1}
+                </span>
+
+                <div className="min-w-0 md:pr-4">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-subtle">
+                    {m.year}
+                  </p>
+                  <p className="mt-0.5 font-display text-sm font-semibold text-fg">
+                    {m.label}
+                  </p>
+                  <p className="mt-1 text-xs leading-relaxed text-muted">
+                    {m.note}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </div>
+        </ol>
       </div>
     </div>
   )

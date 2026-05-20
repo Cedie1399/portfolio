@@ -95,9 +95,9 @@ export const education: Education[] = [
     id: 'dlsau-bs-cs',
     school: 'De La Salle Araneta University',
     degree: 'Bachelor of Science in Computer Science',
-    period: 'Sep 2022 — Sep 2026 (expected)',
+    period: 'Sep 2022 — Sep 2026',
     details:
-      'Currently completing the degree in parallel with returning to SRI in Sep 2025. Thesis: Petmania (see Selected Work).',
+      'Completed in parallel with returning to SRI in Sep 2025 as an SDE. Thesis: Petmania (see Selected Work).',
   },
 ]
 

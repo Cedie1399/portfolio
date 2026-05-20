@@ -68,6 +68,45 @@
     }
   }
 
+  @keyframes icon-float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(-2deg);
+    }
+    50% {
+      transform: translate3d(0, -3px, 0) rotate(2deg);
+    }
+  }
+
+  .icon-float {
+    animation: icon-float 4.2s ease-in-out infinite;
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  @keyframes orb-pulse {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.06);
+    }
+  }
+
+  .orb-pulse {
+    animation: orb-pulse 3.6s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .icon-float,
+    .orb-pulse {
+      animation: none;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .cursor-blink {
       animation: none;
