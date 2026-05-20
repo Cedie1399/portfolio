@@ -2,7 +2,6 @@ import { useGsapSection } from '@/hooks/useGsapSection'
 import { SKILL_ICONS } from '@/components/skills/icons'
 import { BRAND_COLORS } from '@/components/skills/brandColors'
 import { ArrowUpRightIcon } from '@/components/hero/icons'
-import { skills } from '@/data/portfolioData'
 
 type HeadlineEntry = {
   name: string
@@ -10,6 +9,9 @@ type HeadlineEntry = {
   copy: string
   usedIn: string[]
 }
+
+type CohortItem = { name: string; role: string }
+type Cohort = { label: string; items: CohortItem[] }
 
 const HEADLINE_SIX: HeadlineEntry[] = [
   {
@@ -50,29 +52,44 @@ const HEADLINE_SIX: HeadlineEntry[] = [
   },
 ]
 
-const ROLE_MAP: Record<string, string> = {
-  'Next.js': 'App framework',
-  'Tailwind CSS': 'UI styling',
-  Vite: 'Build tool',
-  'React Three Fiber': '3D in React',
-  'Three.js': '3D engine',
-  MySQL: 'Relational database',
-  Docker: 'Containerization',
-  Vercel: 'Hosting · CI',
-  Linux: 'Server OS',
-  Nginx: 'Reverse proxy',
-  GitHub: 'Source control',
-  GitLab: 'Source control',
-}
+const COHORTS: Cohort[] = [
+  {
+    label: 'Frameworks & UI',
+    items: [
+      { name: 'Next.js', role: 'App framework' },
+      { name: 'Tailwind CSS', role: 'UI styling' },
+      { name: 'Vite', role: 'Build tool' },
+      { name: 'React Three Fiber', role: '3D in React' },
+      { name: 'Three.js', role: '3D engine' },
+    ],
+  },
+  {
+    label: 'Data',
+    items: [{ name: 'MySQL', role: 'Relational database' }],
+  },
+  {
+    label: 'Infra & ops',
+    items: [
+      { name: 'Docker', role: 'Containerization' },
+      { name: 'Vercel', role: 'Hosting · CI' },
+      { name: 'Linux', role: 'Server OS' },
+      { name: 'Nginx', role: 'Reverse proxy' },
+    ],
+  },
+  {
+    label: 'Source control',
+    items: [
+      { name: 'GitHub', role: 'Code hosting' },
+      { name: 'GitLab', role: 'Code hosting' },
+    ],
+  },
+]
 
 export default function Skills() {
   const sectionRef = useGsapSection<HTMLElement>()
 
-  const headlineNames = new Set(HEADLINE_SIX.map((h) => h.name))
-  const otherTools = skills
-    .flatMap((c) => c.items)
-    .filter((n) => !headlineNames.has(n))
-  const totalTools = HEADLINE_SIX.length + otherTools.length
+  const otherToolsCount = COHORTS.reduce((sum, c) => sum + c.items.length, 0)
+  const totalTools = HEADLINE_SIX.length + otherToolsCount
 
   return (
     <section
@@ -95,7 +112,7 @@ export default function Skills() {
         </div>
 
         <div className="mt-14 sm:mt-20">
-          <AlsoInTheKit names={otherTools} />
+          <AlsoInTheKit cohorts={COHORTS} total={otherToolsCount} />
         </div>
 
         <div className="mt-12 sm:mt-16">
@@ -227,7 +244,13 @@ function HeadlineArticle({
   )
 }
 
-function AlsoInTheKit({ names }: { names: string[] }) {
+function AlsoInTheKit({
+  cohorts,
+  total,
+}: {
+  cohorts: Cohort[]
+  total: number
+}) {
   return (
     <section>
       <header className="border-b border-border/40 pb-4 sm:pb-5">
@@ -235,35 +258,51 @@ function AlsoInTheKit({ names }: { names: string[] }) {
           Also in the kit
         </p>
         <h3 className="mt-2 max-w-2xl font-display text-xl font-semibold leading-tight text-fg sm:text-2xl md:text-3xl">
-          The supporting cast — {names.length} more tools that earn their slot
-          per project.
+          The supporting cast — {total} more tools, grouped by where they sit
+          in the stack.
         </h3>
       </header>
 
-      <ul className="mt-5 flex flex-wrap gap-2 sm:mt-6 sm:gap-2.5">
-        {names.map((name) => (
-          <li key={name}>
-            <ToolChip name={name} />
-          </li>
+      <div className="mt-6 space-y-6 sm:mt-8 sm:space-y-7">
+        {cohorts.map((cohort) => (
+          <CohortRow key={cohort.label} cohort={cohort} />
         ))}
-      </ul>
+      </div>
     </section>
   )
 }
 
-function ToolChip({ name }: { name: string }) {
+function CohortRow({ cohort }: { cohort: Cohort }) {
+  const count = String(cohort.items.length).padStart(2, '0')
+
+  return (
+    <div className="grid gap-3 md:grid-cols-12 md:items-start md:gap-6">
+      <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-subtle md:col-span-3 md:pt-1.5">
+        {cohort.label}
+        <span className="ml-2 text-subtle/70">· {count}</span>
+      </p>
+      <ul className="flex flex-wrap gap-2 sm:gap-2.5 md:col-span-9">
+        {cohort.items.map((item) => (
+          <li key={item.name}>
+            <ToolChip name={item.name} role={item.role} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+function ToolChip({ name, role }: { name: string; role: string }) {
   const Icon = SKILL_ICONS[name]
   const color = BRAND_COLORS[name] ?? '#34d399'
-  const role = ROLE_MAP[name] ?? ''
 
   return (
     <span
-      title={role ? `${name} — ${role}` : name}
-      className="group/chip inline-flex items-center gap-2 rounded-full border border-border bg-canvas/60 px-3 py-1.5 text-xs text-muted transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--brand)]/50 hover:bg-canvas/80 hover:text-fg motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+      className="inline-flex items-center gap-2 rounded-full border border-border bg-canvas/60 px-3 py-1.5 text-xs transition-colors duration-300 hover:border-[var(--brand)]/50 motion-reduce:transition-none"
       style={{ ['--brand' as string]: color }}
     >
       <span
-        className="grid h-4 w-4 shrink-0 place-items-center transition-transform duration-300 group-hover/chip:rotate-12"
+        className="grid h-4 w-4 shrink-0 place-items-center"
         style={{ color }}
       >
         {Icon ? (
@@ -274,9 +313,11 @@ function ToolChip({ name }: { name: string }) {
           </span>
         )}
       </span>
-      <span className="font-medium uppercase tracking-[0.14em]">
-        {shortName(name)}
+      <span className="font-medium text-fg">{shortName(name)}</span>
+      <span aria-hidden="true" className="text-subtle/70">
+        ·
       </span>
+      <span className="text-muted">{role}</span>
     </span>
   )
 }
