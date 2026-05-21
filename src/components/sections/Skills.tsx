@@ -1,4 +1,6 @@
 import { useGsapSection } from '@/hooks/useGsapSection'
+import { useCountUp } from '@/hooks/useCountUp'
+import { TextScramble } from '@/components/TextScramble'
 import { SKILL_ICONS } from '@/components/skills/icons'
 import { BRAND_COLORS } from '@/components/skills/brandColors'
 import { ArrowUpRightIcon } from '@/components/hero/icons'
@@ -140,7 +142,7 @@ function PageHeader({ totalTools }: { totalTools: number }) {
           </p>
         </div>
         <p className="hidden font-mono text-[10px] uppercase tracking-[0.22em] text-subtle md:block">
-          Field guide · {totalTools} tools
+          Field guide · <CountUpNum target={totalTools} /> tools
         </p>
       </div>
     </header>
@@ -151,7 +153,7 @@ function HeadlineLead() {
   return (
     <div className="max-w-3xl">
       <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-accent">
-        Issue 06 · The Headline Six
+        The Headline Six
       </p>
       <h3 className="mt-3 font-display text-xl font-semibold leading-tight text-fg sm:text-2xl md:text-4xl">
         Six tools that ship on every current project.
@@ -193,7 +195,7 @@ function HeadlineArticle({
             WebkitTextStroke: `1.5px ${color}`,
           }}
         >
-          {num}
+          <TextScramble text={num} />
         </p>
       </div>
 
@@ -258,8 +260,8 @@ function AlsoInTheKit({
           Also in the kit
         </p>
         <h3 className="mt-2 max-w-2xl font-display text-xl font-semibold leading-tight text-fg sm:text-2xl md:text-3xl">
-          The supporting cast — {total} more tools, grouped by where they sit
-          in the stack.
+          The supporting cast — <CountUpNum target={total} /> more tools,
+          grouped by where they sit in the stack.
         </h3>
       </header>
 
@@ -374,4 +376,9 @@ function shortName(name: string): string {
   if (name === 'Tailwind CSS') return 'Tailwind'
   if (name === 'React Three Fiber') return 'R3F'
   return name
+}
+
+function CountUpNum({ target }: { target: number }) {
+  const { ref, value } = useCountUp<HTMLSpanElement>(target, { duration: 1200 })
+  return <span ref={ref}>{value}</span>
 }

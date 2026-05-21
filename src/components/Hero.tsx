@@ -49,7 +49,7 @@ function HeroContent() {
       <div className="flex items-center gap-3">
         <span className="h-px w-12 bg-accent" />
         <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-accent">
-          The Feature · 04
+          The Feature · 01
         </p>
       </div>
 
